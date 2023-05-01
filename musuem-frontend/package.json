@@ -10,12 +10,22 @@
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
+    "chart.js": "^4.3.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
+    "faker": "^6.6.6",
     "next": "13.3.4",
+    "plotly.js": "^2.22.0",
     "postcss": "8.4.23",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2"
+    "react-plotly.js": "^2.6.0",
+    "tailwindcss": "3.3.2",
+    "victory": "^36.6.10"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "Faker": "^0.7.2"
   }
 }
