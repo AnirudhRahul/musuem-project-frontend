@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import {
   Chart as ChartJS,
@@ -81,7 +80,7 @@ const onClick = (event) => {
 
   const ind = getElementsAtEvent(chartRef.current, event)[0].index
   const url = Data['displays'][ind][2]
-  window.open(url, '_blank').focus();
+  window.open(url, '_blank');
 
 }
 
