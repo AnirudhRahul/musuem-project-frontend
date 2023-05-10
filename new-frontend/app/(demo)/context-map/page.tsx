@@ -1,6 +1,7 @@
 'use client'
 import Header from "@/components/ui/header"
 import DataImport from "../data.json"
+import '../chart.css'
 import {
   Chart as ChartJS,
   LinearScale,
@@ -8,10 +9,13 @@ import {
   LineElement,
   Tooltip,
   Legend,
+  Ticks,
 } from 'chart.js';
+import 'chartjs-plugin-zoom';
 import { Scatter, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import  React from 'react';
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+
 
 type DataType = {
   points: number[][];
@@ -26,10 +30,19 @@ const Data = DataImport as DataType;
 //   description: 'A Contextual Map of displays from the Harvard Museum API',
 // }
 
+
+function randInt(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const perf = Data.points.map((point, i) => randInt(1, 10))
+
 const data ={
   datasets: [{
     label: 'Harvard Art Musuem',
     borderColor: '#36A2EB',
+    pointRadius: perf.map((p) => 2 + Math.log2(p)),
+    pointHoverRadius: perf.map((p) => 2 + Math.log2(p)),
     backgroundColor: '#9BD0F5',
     data: Data.points.map((point, i) => {
       return {
@@ -39,6 +52,7 @@ const data ={
         title: Data.displays[i][0],
         url: Data.displays[i][2],
         image: Data.displays[i][3],
+        perf: perf[i]
       }
     })
   }
@@ -49,12 +63,12 @@ const data ={
 
 const chartRef = React.createRef();
 const plugin = {
-  id: 'customCanvasBackgroundColor',
-  beforeDraw: (chart: any, args: any, options: any) => {
+  id: 'bgcolor',
+  beforeDatasetsDraw: (chart: any, args: any, options: any) => {
     const {ctx} = chart;
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = options.color || '#99ffff';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   }
@@ -62,8 +76,9 @@ const plugin = {
 
 const options = {
   plugins: {
-    customCanvasBackgroundColor: {
-      color: 'white',
+    title: {
+      display: true,
+      text: 'Scatter Plot',
     },
     tooltip: {
       callbacks: {
@@ -72,25 +87,84 @@ const options = {
           return dpoint.dataset.data[index].title
         },
       }
+    },
+    legend: {
+      position: 'bottom',
+      labels: {
+        color: 'white',
+        font: {
+          size: 20
+        }
+      }
+    },
+
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: 'xy',
+        
+      },
+      zoom: {
+        wheel: {
+          enabled: true,
+        },
+        pinch: {
+          enabled: true,
+        },
+        mode: 'xy',
+      }
+    }
+
+  },
+
+
+  scales: {
+    y: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.5)',
+        tickLength: 0
+      },
+      ticks: {
+        display: false,
+      },
+
+    },
+    x: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.5)',
+        tickLength: 0
+      },
+      ticks: {
+        display: false,
+      },
     }
   },
-  backgroundColor: 'rgba(52, 52, 52, 0.8)',
 
-  pointRadius: 5,
-  pointHoverRadius: 4
+
 }
+
+
 const onClick = (event: any) => {
+  if (!chartRef){
+    return
+  }
   if (getElementsAtEvent(chartRef.current, event).length == 0) {
     return
   }
 
   const ind = getElementsAtEvent(chartRef.current, event)[0].index
-  const url = Data['displays'][ind][2]
+  const url = Data.displays[ind][2]
   window.open(url, '_blank');
 
 }
 
 export default function ContextMap() {
+  React.useEffect(() => {
+    if (typeof window !== "undefined")
+      import("chartjs-plugin-zoom").then((plugin) => {
+        ChartJS.register(plugin.default);
+      });
+    }, []);
   return (
     <section className="bg-gradient-to-b from-gray-100 to-white">
       <Header/>
@@ -105,18 +179,21 @@ export default function ContextMap() {
             Leveraging contextual embeddings, our visualization provides a practical birds-eye view of display performance at Harvard Art Museum, enabling swift assessment of different categories using size and color cues.
 
             </p>
+            </div>
+          
+          
+          <div className="floating-card">
+            <Scatter
+              ref={chartRef}
+              options={options}
+              data={data}
+              onClick={onClick}
+              plugins={[plugin]}
+              />
           </div>
-
-          <Scatter
-          ref={chartRef}
-          options={options}
-          plugins={[plugin]}
-          data={data}
-          onClick={onClick}
-          />
-              
-      </main>
-    
-    </section>
-  )
-}
+                
+        </main>
+      
+      </section>
+    )
+  }

@@ -1,5 +1,5 @@
 'use client';
-import VideoThumb from '@/public/images/hero-image.png'
+import VideoThumb from '@/public/images/demo.png'
 import ModalVideo from '@/components/modal-video'
 import Typewriter from 'typewriter-effect';
 import './typing.css'
@@ -64,9 +64,7 @@ export default function Hero() {
             thumbWidth={768}
             thumbHeight={432}
             thumbAlt="Modal video thumbnail"
-            video="/videos/video.mp4"
-            videoWidth={1920}
-            videoHeight={1080} />
+            />
 
         </div>
 
