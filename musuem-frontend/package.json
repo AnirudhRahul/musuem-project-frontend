@@ -14,7 +14,7 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "faker": "^6.6.6",
-    "next": "13.3.4",
+    "next": "13.2.4",
     "plotly.js": "^2.22.0",
     "postcss": "8.4.23",
     "react": "18.2.0",
