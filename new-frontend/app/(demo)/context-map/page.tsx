@@ -11,7 +11,6 @@ import {
   Legend,
   Ticks,
 } from 'chart.js';
-import 'chartjs-plugin-zoom';
 import { Scatter, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import  React from 'react';
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
