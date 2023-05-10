@@ -15,8 +15,8 @@ ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 type DataType = {
   points: number[][];
-  displays: string;
-  vectors: number;
+  displays: string[][];
+  vector: number[][];
   years: number[];
 };
 const Data = DataImport as DataType;
@@ -35,10 +35,10 @@ const data ={
       return {
         x: point[0],
         y: point[1],
-        desc: Data['displays'][i][1],
-        title: Data['displays'][i][0],
-        url: Data['displays'][i][2],
-        image: Data['displays'][i][3],
+        desc: Data.displays[i][1],
+        title: Data.displays[i][0],
+        url: Data.displays[i][2],
+        image: Data.displays[i][3],
       }
     })
   }
