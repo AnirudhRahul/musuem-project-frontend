@@ -15,7 +15,7 @@ import 'chartjs-plugin-zoom';
 import { Scatter, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import  React from 'react';
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
-
+import Slider from 'react-input-slider';
 
 type DataType = {
   points: number[][];
@@ -131,23 +131,68 @@ const options = {
 
 }
 
+function dist(a: number[], b: number[]){
+    let dist = 0
+    for (let i=0; i<a.length; i++){
+        dist += Math.pow(a[i] - b[i], 2)
+    }
+    return dist
+}
 
-const onClick = (event: any) => {
-  if (!chartRef){
-    return
-  }
-  if (getElementsAtEvent(chartRef.current, event).length == 0) {
-    return
-  }
+function getRandom(arr: number[], n: number) {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
+}
 
-  const ind = getElementsAtEvent(chartRef.current, event)[0].index
-  const url = Data.displays[ind][2]
-  window.open(url, '_blank');
+function getNeighborIndices(index: number, radius: number, size: number){
+    const cur = Data.vector[index]
+    let arr = []
+    for(let i=0; i<Data.vector.length; i++){
+        if(i==index){
+            continue
+        }
+        arr.push({
+            index: i,
+            dist: dist(cur, Data.vector[i])
+        })
+    }
 
+    arr.sort((a, b) => a.dist - b.dist)
+
+    arr = arr.slice(0, radius).map((a) => a.index)
+
+    return getRandom(arr, size)
 }
 
 export default function ContextMap() {
-    const [index, setIndex] = React.useState(-1);
+  const [index, setIndex] = React.useState(-1);
+  const [radius, setRadius] = React.useState(10);
+  const [size, setSize] = React.useState(4);
+
+
+    const onClick = (event: any) => {
+        if (!chartRef){
+        return
+        }
+        if (getElementsAtEvent(chartRef.current, event).length == 0) {
+        return
+        }
+
+        const ind = getElementsAtEvent(chartRef.current, event)[0].index
+        setIndex(ind)
+        // const url = Data.displays[ind][2]
+        // window.open(url, '_blank');
+
+    }
 
   React.useEffect(() => {
     if (typeof window !== "undefined")
@@ -183,10 +228,55 @@ export default function ContextMap() {
               />
           </div>
           <br/>
-          <h4 className="h4 mb-4">
-            Selected Display: 
+          <div className="max-w-3xl mx-auto text-center pt-12 ">
+            <h4 className="h4 mb-4">
+                Selected Display:  {index>0 && Data.displays[index][0]}
+                {index>0 && <img className="mx-auto mt-8" src={Data.displays[index][3] + "/full/256,/0/default.png"}></img>}
+                {index>0 &&
+                <React.Fragment>
+                <div className="flex flex-col mt-6">
+                    <div>{'Neighbor Radius: ' + radius}</div>
+                        <Slider
+                        className="mx-auto"
+                        axis="x"
+                        xstep={1}
+                        xmin={3}
+                        xmax={20}
+                        x={radius}
+                        onChange={({ x }) => setRadius(x)} 
+                        />
+                  
+                    <div className="mt-3">{'Exhibit Size: ' + size}</div>
+                        <Slider
+                        className="mx-auto"
+                        axis="x"
+                        xstep={1}
+                        xmin={2}
+                        xmax={radius}
+                        x={size}
+                        onChange={({ x }) => setSize(x)} 
+                        />
+                    </div>
+                </React.Fragment>
+                }
 
-          </h4>
+                {   index > 0 &&
+                <div className="grid grid-cols-3 gap-10 mt-10">
+                    {getNeighborIndices(index, radius, size).map((ind) => <div>
+                        <a href={Data.displays[ind][2]} target="_blank">{Data.displays[ind][0]}</a>
+                        <img className="mx-auto mt-2" src={Data.displays[ind][3] + "/full/256,/0/default.png"}></img>
+                    </div>
+
+                    )}
+                </div>
+                }
+               
+                
+
+
+            </h4>
+          </div>
+
                 
         </main>
       
