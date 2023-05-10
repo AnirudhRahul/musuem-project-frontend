@@ -26,7 +26,7 @@ const Data = DataImport as DataType;
 //   description: 'A Contextual Map of displays from the Harvard Museum API',
 // }
 
-export const data ={
+const data ={
   datasets: [{
     label: 'Harvard Art Musuem',
     borderColor: '#36A2EB',
