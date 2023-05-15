@@ -3,7 +3,7 @@
     position: relative;
     padding: 1.5em;
     background: #333;
-
+    width: max(600px, 80%);
     max-height: 50%;
     border-radius: 30px;
     overflow:hidden;
