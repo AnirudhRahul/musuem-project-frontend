@@ -11,6 +11,7 @@ import FeaturesBlocks from '@/components/features-blocks'
 export default function Home() {
   return (
     <>
+     <meta name="viewport" content="width=1024"/>
       <Hero />
       <Features />
       <FeaturesBlocks />
