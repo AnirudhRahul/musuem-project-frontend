@@ -7,6 +7,8 @@ import FeaturesBg from '@/public/images/features-bg.png'
 import FeaturesElement from '@/public/images/features-element.png'
 
 import TrackingImg from '@/public/images/tracking.png'
+import ContextImg from '@/public/images/context.png'
+import DemoImg from '@/public/images/demo2.png'
 
 export default function Features() {
   
@@ -50,7 +52,7 @@ export default function Features() {
                 <p className="text-xl text-gray-600">
                   
                   Our data pipeline leverages AI to not only track the flow of visitors, but also to analyze their behavior and measure the performance of exhibits.
-                  This data is then contextualized by Large Language Models to better help museums understand their visitors.
+                  This data is then contextualized with machine learning to better help museums understand their visitors.
 
                 </p>
               </div>
@@ -76,7 +78,7 @@ export default function Features() {
                 >
                   <div>
                     <div className="font-bold leading-snug tracking-tight mb-1">Contextualizing the Data</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="text-gray-600">Next our contextualization system analyzes image and text metadata of different musuem displays to generate a contextual embedding. </div>
                   </div>
 
 
@@ -88,7 +90,7 @@ export default function Features() {
                 >
                   <div>
                     <div className="font-bold leading-snug tracking-tight mb-1">Displaying Data</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="text-gray-600">Finally we combine our gathered metrics along with contextual embeddings to create intuitive data views such as a contextual map</div>
                   </div>
 
 
@@ -136,8 +138,7 @@ export default function Features() {
                   leaveTo="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <Image className="md:max-w-none mx-auto rounded" src={FeaturesBg} width={500} height="462" alt="Features bg" />
-                    <Image className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width={500} height="44" alt="Element" style={{ top: '30%' }} />
+                    <Image className="md:max-w-none mx-auto border-2  border-black" src={ContextImg} width={500} height="462" alt="Context embeddings" />
                   </div>
                 </Transition>
                 {/* Item 3 */}
@@ -153,8 +154,7 @@ export default function Features() {
                   leaveTo="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <Image className="md:max-w-none mx-auto rounded" src={FeaturesBg} width={500} height="462" alt="Features bg" />
-                    <Image className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width={500} height="44" alt="Element" style={{ top: '30%' }} />
+                    <Image className="md:max-w-none mx-auto border-2  border-black" src={DemoImg} width={500} height="462" alt="Demo embeddings" />
                   </div>
                 </Transition>
               </div>
