@@ -262,7 +262,7 @@ export default function ContextMap() {
                 {   index > 0 &&
                 <div className="grid grid-cols-3 gap-10 mt-10">
                     {getNeighborIndices(index, radius, size).map((ind) => <div>
-                        <a href={Data.displays[ind][2]} target="_blank">{Data.displays[ind][0]}</a>
+                        <a href={Data.displays[ind][2]} className="titl" target="_blank">{Data.displays[ind][0]}</a>
                         <img className="mx-auto mt-2" src={Data.displays[ind][3] + "/full/256,/0/default.png"}></img>
                     </div>
 
